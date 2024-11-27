@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
@@ -23,12 +23,9 @@ struct ContentView: View {
                 Spacer()
                 
                 VStack(spacing: 25) { // Buttons Column
-                    Button(action: {
-                        print("Host button tapped")
-                    }) {
+                    NavigationLink(destination: HostSessionView()) {
                         Text("Host a Session")
-                            .font(.custom("AfacadFlux-VariableFont_slnt,wght", size: 30))
-                            .fontWeight(.bold)
+                            .font(.custom("RobotoSlab-Bold", size: 30))
                             .frame(maxWidth: .infinity)
                             .frame(height: 60)
                             .background(Color.theaterRed)
@@ -41,8 +38,7 @@ struct ContentView: View {
                         print("Join button tapped")
                     }) {
                         Text("Join a Session")
-                            .font(.custom("AfacadFlux-VariableFont_slnt,wght", size: 30))
-                            .fontWeight(.bold)
+                            .font(.custom("RobotoSlab-Bold", size: 30))
                             .frame(maxWidth: .infinity)
                             .frame(height: 60)
                             .background(Color.theaterRed)
@@ -57,7 +53,7 @@ struct ContentView: View {
                     .resizable()
                     .frame(maxWidth: .infinity)
                     .ignoresSafeArea(edges: .bottom)
-                    .offset(y: 300)
+                    .offset(y: 275)
             }
             .padding()
             .background(Color.backgroundNavy)
@@ -66,5 +62,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    HomeView()
 }

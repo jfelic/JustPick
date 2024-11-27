@@ -5,8 +5,9 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntonSC-Regular.ttf</string>
-		<string>ArsenalSC-Bold.ttf</string>
-		<string>AfacadFlux-VariableFont_slnt,wght.ttf</string>
+		<string>RobotoSlab-Regular.ttf</string>
+		<string>RobotoSlab-Medium.ttf</string>
+		<string>RobotoSlab-Bold.ttf</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>

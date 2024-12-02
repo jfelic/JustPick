@@ -34,9 +34,7 @@ struct HomeView: View {
                     }
                     .padding(.horizontal)
                     
-                    Button(action: {
-                        print("Join button tapped")
-                    }) {
+                    NavigationLink(destination: JoinSessionView()){
                         Text("Join a Session")
                             .font(.custom("RobotoSlab-Bold", size: 30))
                             .frame(maxWidth: .infinity)

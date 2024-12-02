@@ -13,7 +13,7 @@ struct HostSessionView: View {
     @State private var sessionCode = ""
     @Environment(\.dismiss) var dismiss
     
-    let genres = ["All", "Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"]
+    let genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"]
     @State private var selectedGenres: Set<String> = []
     
     var body: some View {
@@ -31,22 +31,7 @@ struct HostSessionView: View {
                     
                     Spacer()
                     
-                    Text("Session Title: ")
-                        .font(.custom("RobotoSlab-Bold", size: 18))
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.theaterRed)
-                    
-                    TextField("", text: $title)
-                        .font(.custom("RobotoSlab-Regular", size: 18))
-                        .padding([.top, .bottom, .horizontal])
-                        .foregroundStyle(Color.backgroundNavy)
-                        .border(.primary)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.popcornYellow, lineWidth: 3)
-                        )
+                    CustomTextField(label: "Session Title: ", text: $title)
                     
                     Spacer()
                     
@@ -72,8 +57,8 @@ struct HostSessionView: View {
                     Spacer()
             
                     Button(action: {
-                        print("Host Session pressed")
-                        // Handle logic here
+                        print("HostSessionView: Host Pressed")
+                        // TODO: Handle logic here
                     }) {
                         Text("Host Session")
                             .font(.custom("RobotoSlab-Bold", size: 30))
@@ -103,7 +88,7 @@ struct HostSessionView: View {
             }
             .onTapGesture { // Dismiss keyboard when user taps outside of it
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                            to: nil, from: nil, for: nil)
+                                                to: nil, from: nil, for: nil)
             }
             .onAppear { // Generate session code
                 sessionCode = String(Int.random(in: 1000...9999))

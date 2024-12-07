@@ -17,7 +17,7 @@ class FirebaseManager: ObservableObject {
     @Published var currentUser: User?
     let db = Firestore.firestore()
     
-    // Sign in anonymously and create user with name
+    // MARK: Sign in anonymously and create user with name
     func signInAnonymously(name: String) async {
         do {
             // Try to sign in and wait for result
@@ -31,7 +31,7 @@ class FirebaseManager: ObservableObject {
         }
     }
 
-    // Create a session
+    // MARK: Create a session
     func createSession(sessionCode: String, title: String, selectedGenres: Set<String>) {
         
         // Make sure we have a currentUser
@@ -58,5 +58,10 @@ class FirebaseManager: ObservableObject {
                 print("Error creating session")
             }
         }
+    }
+    
+    // MARK: Get Session Title
+    func getSessionTitle() {
+        
     }
 }

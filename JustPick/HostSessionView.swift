@@ -11,7 +11,9 @@ struct HostSessionView: View {
     
     @State private var title = ""
     @State private var sessionCode = ""
+    @State private var name = ""
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var firebaseManager: FirebaseManager
     
     let genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"]
     @State private var selectedGenres: Set<String> = []
@@ -33,7 +35,13 @@ struct HostSessionView: View {
                     
                     CustomTextField(label: "Session Title: ", text: $title)
                     
+                    CustomTextField(label: "Your name: ", text: $name)
+                    
                     Spacer()
+                    
+                    Text("Choose Genres: ")
+                        .font(.custom("RobotoSlab-Bold", size: 18))
+                        .foregroundStyle(Color.theaterRed)
                     
                     ScrollView {
                         VStack {
@@ -58,7 +66,16 @@ struct HostSessionView: View {
             
                     Button(action: {
                         print("HostSessionView: Host Pressed")
-                        // TODO: Handle logic here
+                        
+                        Task {
+                            // Sign in anonymous user with their chosen name
+                            await firebaseManager.signInAnonymously(name: name)
+                            
+                            // Create session with current user as host
+                            firebaseManager.createSession(sessionCode: sessionCode, title: title, selectedGenres: selectedGenres)
+                            
+                            // Lastly, navigate user to session screen
+                        }
                     }) {
                         Text("Host Session")
                             .font(.custom("RobotoSlab-Bold", size: 30))
@@ -117,6 +134,6 @@ struct GenreCheckbox: View {
     }
 }
 
-#Preview {
-    HostSessionView()
-}
+//#Preview {
+//    HostSessionView()
+//}

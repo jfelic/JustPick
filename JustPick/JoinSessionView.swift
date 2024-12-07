@@ -59,7 +59,7 @@ struct JoinSessionView: View {
     }
 }
 
-#Preview {
-    JoinSessionView()
-}
+//#Preview {
+//    JoinSessionView()
+//}
 

@@ -13,6 +13,20 @@ struct User {
     let name: String
 }
 
+struct SessionDetails {
+    let title: String
+    let selectedGenres: Set<String>
+    let host: String
+    let active: Bool
+}
+
+enum NetworkError: Error {
+    case invalidData
+    case decodingError
+    case serverError
+    case noSession
+}
+
 class FirebaseManager: ObservableObject {
     @Published var currentUser: User?
     let db = Firestore.firestore()
@@ -30,9 +44,33 @@ class FirebaseManager: ObservableObject {
             print("Error signing in: \(error.localizedDescription)")
         }
     }
+    
+    // MARK: Add a user to session
+    func addUserToSession(sessionCode: String, user: User) async throws {
+        // Make sure we have a currentUser
+        guard let currentUser = currentUser
+            else {
+                print("Hello")
+                return
+            }
+        
+        // Create the user data
+        let userData: [String: Any] = [
+            "id": user.id,
+            "name": user.name,
+            "joinedAt": Timestamp(),
+        ]
+        
+        // Using the async version of setData
+        try await db.collection("sessions")
+            .document(sessionCode)
+            .collection("users")
+            .document(user.id)
+            .setData(userData)
+    }
 
     // MARK: Create a session
-    func createSession(sessionCode: String, title: String, selectedGenres: Set<String>) {
+    func createSession(sessionCode: String, title: String, selectedGenres: Set<String>) async {
         
         // Make sure we have a currentUser
         guard let currentUser = currentUser
@@ -47,21 +85,41 @@ class FirebaseManager: ObservableObject {
             "title": title,
             "createdAt": Timestamp(),
             "genres": Array(selectedGenres),
-            "active": true
+            "active": true,
         ]
         
         // Save it to Firebase
-        db.collection("sessions").document(sessionCode).setData(sessionData) { error in
-            if error == nil {
-                print("Session created successfully!")
-            } else {
-                print("Error creating session")
-            }
+        do {
+            try await db.collection("sessions")
+                .document(sessionCode)
+                .setData(sessionData)
+            
+            print("Session created successfully")
+            
+            try await addUserToSession(sessionCode: sessionCode, user: currentUser)
+        } catch {
+            print("Error creating session: \(error.localizedDescription)")
         }
     }
     
-    // MARK: Get Session Title
-    func getSessionTitle() {
+    func getSessionDetails(sessionCode: String) async throws -> SessionDetails {
+        // Get the session document
+        let documentSnapshot = try await db.collection("sessions")
+            .document(sessionCode)
+            .getDocument()
         
+        guard let data = documentSnapshot.data() else {
+            throw NetworkError.invalidData
+        }
+        
+        // Extract the data
+        guard let title = data["title"] as? String,
+              let genres = data["genres"] as? [String],
+              let host = data["host"] as? String,
+              let active = data["active"] as? Bool else {
+            throw NetworkError.decodingError
+        }
+        
+        return SessionDetails(title: title, selectedGenres: Set(genres), host: host, active: active)
     }
 }

@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct SessionView: View {
+    
     @EnvironmentObject private var firebaseManager: FirebaseManager
     @Environment(\.dismiss) var dismiss
     
     // Shared session info
-    @State var sessionCode: String = "ABCD"
-    @State var sessionTitle: String = "Testing Title"
-//    @State var selectedGenres: Set<String>
-//    @State var participants: [User] = []
+    let sessionCode: String // Passed in from HostSessionView
+    let sessionTitle: String // Passed in from HostSessionView
+    @State var selectedGenres: Set<String> = ["Action"] // Passed in from HostSessionView
+    @State var participants: [User] = []
 
     // Personal movie-viewing state
 //    @State var currentMovieIndex = 0
@@ -63,6 +64,7 @@ struct SessionView: View {
             }
             .padding()
             .background(Color.backgroundNavy)
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action : {
@@ -85,10 +87,13 @@ struct SessionView: View {
                         .padding()
                 }
             }
+            .onAppear { // TODO: Get all the information we need from Firebase
+                
+            }
         }
     }
 }
-
-#Preview {
-    SessionView()
-}
+//
+//#Preview {
+//    SessionView()
+//}

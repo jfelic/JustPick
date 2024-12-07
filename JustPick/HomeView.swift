@@ -18,6 +18,7 @@ struct HomeView: View {
                         .frame(maxWidth: .infinity)
                     Text("JustPick")
                         .font(.custom("AntonSC-Regular", size: 40))
+                        .foregroundStyle(Color.black)
                 }
                 
                 Spacer()

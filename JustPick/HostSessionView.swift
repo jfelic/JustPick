@@ -13,9 +13,10 @@ struct HostSessionView: View {
     @State private var sessionCode = ""
     @State private var name = ""
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var firebaseManager: FirebaseManager
+    @EnvironmentObject private var firebaseManager: FirebaseManager // interact with Firebase
+    @State private var navigateToSessionView = false // State to trigger navigation
     
-    let genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"]
+    let genres: [String: Int] = ["Action": 28, "Adventure": 12, "Comedy": 35, "Drama": 18, "Fantasy": 14, "Horror": 27, "Mystery": 9648, "Romance": 10749, "Science Fiction": 878, "Thriller": 53]
     @State private var selectedGenres: Set<String> = []
     
     var body: some View {
@@ -45,7 +46,7 @@ struct HostSessionView: View {
                     
                     ScrollView {
                         VStack {
-                            ForEach(genres, id: \.self) { genre in
+                            ForEach(genres.keys.sorted(), id: \.self) { genre in
                                 GenreCheckbox(
                                     title: genre,
                                     isSelected: selectedGenres.contains(genre),
@@ -72,9 +73,10 @@ struct HostSessionView: View {
                             await firebaseManager.signInAnonymously(name: name)
                             
                             // Create session with current user as host
-                            firebaseManager.createSession(sessionCode: sessionCode, title: title, selectedGenres: selectedGenres)
+                            await firebaseManager.createSession(sessionCode: sessionCode, title: title, selectedGenres: selectedGenres)
                             
                             // Lastly, navigate user to session screen
+                            navigateToSessionView = true
                         }
                     }) {
                         Text("Host Session")
@@ -86,6 +88,13 @@ struct HostSessionView: View {
                             .cornerRadius(15)
                     }
                     .padding(.horizontal)
+                    
+                    NavigationLink(
+                        destination: SessionView(sessionCode: sessionCode, sessionTitle: title, selectedGenres: selectedGenres),
+                        isActive: $navigateToSessionView
+                    ) {
+                        EmptyView()
+                    }
                 }
                 .padding()
 
@@ -108,7 +117,7 @@ struct HostSessionView: View {
                                                 to: nil, from: nil, for: nil)
             }
             .onAppear { // Generate session code
-                sessionCode = String(Int.random(in: 1000...9999))
+                sessionCode = String(Int.random(in: 1000...99999))
             }
         }
     }

@@ -32,11 +32,13 @@ struct JustPickApp: App {
     
     // Create the FirebaseManager as a StateObject
     @StateObject private var firebaseManager = FirebaseManager()
+    @State private var networkManager = NetworkManager()
     
     var body: some Scene {
         WindowGroup {
             HomeView()
                 .environmentObject(firebaseManager) // use firebaseManager to trickle down state to entire app
+                .environment(networkManager)
         }
     }
 }

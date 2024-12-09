@@ -1,0 +1,43 @@
+# OS X temporary files
+.DS_Store
+.Trashes
+*.swp
+*.lock
+profile
+
+# Xcode temporary files
+*~.nib
+DerivedData/
+build/
+
+# Xcode private settings
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+
+# Xcode project files you won't want to share
+project.xcworkspace
+xcuserdata
+*.xccheckout
+*.xcuserstate
+
+# App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+.swiftpm
+
+# Sensitive configuration files
+GoogleService-Info.plist
+JustPick/*.xcconfig
+
+# CocoaPods (if you're using it)
+Pods/
+Podfile.lock

@@ -20,7 +20,7 @@ struct SessionDetails {
     let active: Bool
 }
 
-enum NetworkError: Error {
+enum FirebaseError: Error {
     case invalidData
     case decodingError
     case serverError
@@ -109,7 +109,7 @@ class FirebaseManager: ObservableObject {
             .getDocument()
         
         guard let data = documentSnapshot.data() else {
-            throw NetworkError.invalidData
+            throw FirebaseError.invalidData
         }
         
         // Extract the data
@@ -117,7 +117,7 @@ class FirebaseManager: ObservableObject {
               let genres = data["genres"] as? [String],
               let host = data["host"] as? String,
               let active = data["active"] as? Bool else {
-            throw NetworkError.decodingError
+            throw FirebaseError.decodingError
         }
         
         return SessionDetails(title: title, selectedGenres: Set(genres), host: host, active: active)

@@ -13,5 +13,9 @@
 	<array>
 		<dict/>
 	</array>
+	<key>TMDB_API_KEY</key>
+	<string>fd9852dd2606404af2dbdb683fdc691f</string>
+	<key>TMDB_API_READ_ACCESS_TOKEN</key>
+	<string>eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZDk4NTJkZDI2MDY0MDRhZjJkYmRiNjgzZmRjNjkxZiIsIm5iZiI6MTczMzU0MTE1OC42MTksInN1YiI6IjY3NTNiZDI2MTZlYzQ2YTc3ZjNjOTU2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lvL_FfchOTPCCs3Xe5b05XLGqbiznilWp2eFCx2gl0g</string>
 </dict>
 </plist>

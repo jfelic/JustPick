@@ -32,20 +32,20 @@ struct SessionView: View {
                             case .success(let image):
                                 image
                                     .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 300, height: 375)
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 275, height: 375)
                                     .clipped()
-                                    .cornerRadius(10)
+                                    .cornerRadius(8)
                             case .failure:
                                 Rectangle()
-                                        .fill(Color.gray)
-                                        .frame(width: 300, height: 375)
-                                        .cornerRadius(10)
+                                    .fill(Color.gray)
+                                    .frame(width: 300, height: 375)
+                                    .cornerRadius(30)
                             @unknown default:
                                 Rectangle()
-                                        .fill(Color.gray)
-                                        .frame(width: 300, height: 375)
-                                        .cornerRadius(10)
+                                    .fill(Color.gray)
+                                    .frame(width: 300, height: 375)
+                                    .cornerRadius(10)
                         }
                         
                     }
@@ -61,18 +61,49 @@ struct SessionView: View {
                 HStack {
                     Button(action: {
                         // TODO: Handle like logic here
-                        currentMovieIndex += 1
+                        Task {
+                            try await firebaseManager.likeMovie(movieID: networkManager.movies[currentMovieIndex].id, sessionCode: sessionCode)
+                            currentMovieIndex += 1
+                        }
                     }) {
-                        Text("✅")
+                        Image(systemName: "hand.thumbsup")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(Color.white)
+                            .frame(width: 50, height: 50)
+                            .background(
+                                Circle()
+                                    .fill(Color.buttonGreen)
+                            )
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.borderGreen, lineWidth: 2)
+                            )
+                            .symbolEffect(.bounce, options: .repeat(4))
                     }
+                    .padding(.trailing, 10)
                     
                     Button(action: {
                         // TODO: Handle dislike logic here
-                        currentMovieIndex += 1
-
+                        Task {
+                            try await firebaseManager.dislikeMovie(movieID: networkManager.movies[currentMovieIndex].id, sessionCode: sessionCode)
+                            currentMovieIndex += 1
+                        }
                     }) {
-                        Text("❌")
+                        Image(systemName: "hand.thumbsdown")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(Color.white)
+                            .frame(width: 50, height: 50)
+                            .background(
+                                Circle()
+                                    .fill(Color.theaterRed)
+                            )
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.borderRed, lineWidth: 2)
+                            )
+                            .symbolEffect(.bounce, options: .repeat(4))
                     }
+                    .padding(.leading, 10)
                 }
                 
                 Spacer()
@@ -80,7 +111,7 @@ struct SessionView: View {
                 ScrollView {
                     Text(networkManager.movies[currentMovieIndex].overview)
                         .frame(maxWidth: .infinity)
-                        .font(.custom("RobotoSlab-Bold", size: 18))
+                        .font(.custom("RobotoSlab-Regular", size: 18))
                         .foregroundStyle(Color.white)
                         .padding()
                 }

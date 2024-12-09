@@ -102,6 +102,7 @@ class FirebaseManager: ObservableObject {
         }
     }
     
+    // MARK: Get Session Details
     func getSessionDetails(sessionCode: String) async throws -> SessionDetails {
         // Get the session document
         let documentSnapshot = try await db.collection("sessions")
@@ -121,5 +122,59 @@ class FirebaseManager: ObservableObject {
         }
         
         return SessionDetails(title: title, selectedGenres: Set(genres), host: host, active: active)
+    }
+    
+    // MARK: Like Movie
+    func likeMovie(movieID: Int, sessionCode: String) async throws {
+        // Make sure we have a currentUser
+        guard let currentUser = currentUser else {
+            print("likeMovie: User is not authenticated")
+            return
+        }
+        
+        print("Attempting to like movie with ID: \(movieID)")
+        print("Session code: \(sessionCode)")
+        print("Current user ID: \(currentUser.id)")
+        
+        // Create the data we want to send
+        let voteData: [String: Any] = [
+            "userID": currentUser.id,
+            "\(movieID)": true,
+        ]
+        
+        print("Creating vote document...")
+        try await db.collection("sessions")
+            .document(sessionCode)
+            .collection("votes")
+            .document(currentUser.id)
+            .updateData(voteData)
+        print("Vote successfully recorded")
+    }
+    
+    // MARK: Dislike Movie
+    func dislikeMovie(movieID: Int, sessionCode: String) async throws {
+        // Make sure we have a currentUser
+        guard let currentUser = currentUser else {
+            print("dislikeMovie: User is not authenticated")
+            return
+        }
+        
+        print("Attempting to dislike movie with ID: \(movieID)")
+        print("Session code: \(sessionCode)")
+        print("Current user ID: \(currentUser.id)")
+        
+        // Create the data we want to send
+        let voteData: [String: Any] = [
+            "userID": currentUser.id,
+            "\(movieID)": false,
+        ]
+        
+        print("Creating vote document...")
+        try await db.collection("sessions")
+            .document(sessionCode)
+            .collection("votes")
+            .document(currentUser.id)
+            .updateData(voteData)
+        print("Vote successfully recorded")
     }
 }

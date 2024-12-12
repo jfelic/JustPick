@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: Structs
 struct TMDBMovieResponse: Codable {
     var results: [Movie]
 }
@@ -31,6 +32,7 @@ enum TMDBError: Error {
     case unknown(Error)      // Wraps any other unexpected errors
 }
 
+// MARK: API Config
 enum APIConfig {
     // Base URL for images
     static let imageBaseURL = "https://image.tmdb.org/t/p/original"
@@ -62,32 +64,33 @@ enum APIConfig {
         }
     }
     
-    func testAPIConfig() {
-        print("Testing API Configuration...")
-        print("API Key: \(String(APIConfig.apiKey.prefix(5)))...")
-        print("Access Token exists: \(APIConfig.accessToken.isEmpty ? "No" : "Yes")")
-        
-        Task {
-            do {
-                let url = URL(string: "https://api.themoviedb.org/3/authentication")!
-                var request = URLRequest(url: url)
-                request.httpMethod = "GET"
-                request.timeoutInterval = 10
-                request.allHTTPHeaderFields = [
-                    "accept": "application/json",
-                    "Authorization": "Bearer \(APIConfig.accessToken)"
-                ]
-                
-                let (data, _) = try await URLSession.shared.data(for: request)
-                print(String(decoding: data, as: UTF8.self))
-                
-                
-            } catch {
-                print("API Test Error: \(error.localizedDescription)")
-            }
-        }
-    }
+//    func testAPIConfig() {
+//        print("Testing API Configuration...")
+//        print("API Key: \(String(APIConfig.apiKey.prefix(5)))...")
+//        print("Access Token exists: \(APIConfig.accessToken.isEmpty ? "No" : "Yes")")
+//        
+//        Task {
+//            do {
+//                let url = URL(string: "https://api.themoviedb.org/3/authentication")!
+//                var request = URLRequest(url: url)
+//                request.httpMethod = "GET"
+//                request.timeoutInterval = 10
+//                request.allHTTPHeaderFields = [
+//                    "accept": "application/json",
+//                    "Authorization": "Bearer \(APIConfig.accessToken)"
+//                ]
+//                
+//                let (data, _) = try await URLSession.shared.data(for: request)
+//                print(String(decoding: data, as: UTF8.self))
+//                
+//                
+//            } catch {
+//                print("API Test Error: \(error.localizedDescription)")
+//            }
+//        }
+//    }
     
+    // MARK: Fetch Movies
     func fetchMovies() async throws -> [Movie] {
         // First, set up the URL with query parameters
         let url = URL(string: "https://api.themoviedb.org/3/discover/movie")!
@@ -124,6 +127,7 @@ enum APIConfig {
         }
     }
     
+    // MARK: Load Movies
     func loadMovies() async {
         do {
             // Fetch new movies from the API
@@ -140,5 +144,44 @@ enum APIConfig {
         } catch {
             print("Unexpected error: \(error.localizedDescription)")
         }
+    }
+    
+    // MARK: Fetch Movie by ID
+    func fetchMovieByID(movieID: Int) async throws -> Movie {
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(movieID)")!
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        let queryItems: [URLQueryItem] = [
+          URLQueryItem(name: "language", value: "en-US"),
+        ]
+        components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems
+
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 10
+        request.allHTTPHeaderFields = [
+          "accept": "application/json",
+          "Authorization": "Bearer \(APIConfig.accessToken)"
+        ]
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw TMDBError.invalidResponse
+        }
+        
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw TMDBError.serverError(httpResponse.statusCode)
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let movie = try decoder.decode(Movie.self, from: data)
+            return movie
+        } catch {
+            print("fetchMovieByID: Decoding error \(error)")
+            throw TMDBError.decodingError
+        }
+        
     }
 }

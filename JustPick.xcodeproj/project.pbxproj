@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B80384FE2D03959B00139C49 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B80384FD2D03959B00139C49 /* FirebaseAuth */; };
 		B80385002D03959B00139C49 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B80384FF2D03959B00139C49 /* FirebaseFirestore */; };
+		B8EBD92D2D07746200EC699B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B8EBD9122D07746200EC699B /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		B80A93A72CF6B76F00A860CB /* JustPickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustPickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80A93B12CF6B76F00A860CB /* JustPickUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B87ED3A92D06181D009EE702 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		B8EBD9122D07746200EC699B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -116,6 +118,8 @@
 				B80A93AA2CF6B76F00A860CB /* JustPickTests */,
 				B80A93B42CF6B76F00A860CB /* JustPickUITests */,
 				B80A93982CF6B76C00A860CB /* Products */,
+				B8EBD9092D07746200EC699B /* Recovered References */,
+				B8EBD9122D07746200EC699B /* Config.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -127,6 +131,14 @@
 				B80A93B12CF6B76F00A860CB /* JustPickUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B8EBD9092D07746200EC699B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				B87ED3A92D06181D009EE702 /* Config.xcconfig */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,6 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8EBD92D2D07746200EC699B /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

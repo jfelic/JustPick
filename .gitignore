@@ -17,6 +17,10 @@ build/
 *.perspectivev3
 xcuserdata/
 
+# Xcode-specific user files
+JustPick.xcodeproj/project.pbxproj
+JustPick.xcodeproj/project.xcworkspace/xcuserdata/jfelic.xcuserdatad/UserInterfaceState.xcuserstate
+
 # Xcode project files you won't want to share
 project.xcworkspace
 xcuserdata

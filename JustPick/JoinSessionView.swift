@@ -46,7 +46,7 @@ struct JoinSessionView: View {
                             sessionTitle = details.title
                             selectedGenres = details.selectedGenres
                             
-                            // Add use to session
+                            // Add user to session
                             if let currentUser = firebaseManager.currentUser {
                                 try await firebaseManager.addUserToSession(sessionCode: sessionCode, user: currentUser)
                             }

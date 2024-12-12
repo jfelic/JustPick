@@ -26,30 +26,31 @@ struct SessionView: View {
                 VStack {
                     AsyncImage(url: networkManager.movies[currentMovieIndex].fullPosterPath) { phase in
                         switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: 300, height: 375)
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 275, height: 375)
-                                    .clipped()
-                                    .cornerRadius(8)
-                            case .failure:
-                                Rectangle()
-                                    .fill(Color.gray)
-                                    .frame(width: 300, height: 375)
-                                    .cornerRadius(30)
-                            @unknown default:
-                                Rectangle()
-                                    .fill(Color.gray)
-                                    .frame(width: 300, height: 375)
-                                    .cornerRadius(10)
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 300, height: 375)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 275, height: 375)
+                                .clipped()
+                                .cornerRadius(8)
+                                .shadow(radius: 1)
+                        case .failure:
+                            Rectangle()
+                                .fill(Color.gray)
+                                .frame(width: 300, height: 375)
+                                .cornerRadius(30)
+                        @unknown default:
+                            Rectangle()
+                                .fill(Color.gray)
+                                .frame(width: 300, height: 375)
+                                .cornerRadius(10)
                         }
                         
                     }
-                        
+                    
                     
                     Text(networkManager.movies[currentMovieIndex].title)
                         .font(.custom("RobotoSlab-Bold", size: 25))
@@ -66,6 +67,7 @@ struct SessionView: View {
                             currentMovieIndex += 1
                         }
                     }) {
+                        // Like Button
                         Image(systemName: "hand.thumbsup")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(Color.white)
@@ -82,8 +84,10 @@ struct SessionView: View {
                     }
                     .padding(.trailing, 10)
                     
+                    // Dislike button
                     Button(action: {
                         // TODO: Handle dislike logic here
+                        // TODO: Reset scroll position when pressed
                         Task {
                             try await firebaseManager.dislikeMovie(movieID: networkManager.movies[currentMovieIndex].id, sessionCode: sessionCode)
                             currentMovieIndex += 1
@@ -107,16 +111,17 @@ struct SessionView: View {
                 }
                 
                 Spacer()
-            
-                ScrollView {
+                
+                ScrollView { // TODO: Reset scroll position when like/dislike tapped
                     Text(networkManager.movies[currentMovieIndex].overview)
                         .frame(maxWidth: .infinity)
                         .font(.custom("RobotoSlab-Regular", size: 18))
                         .foregroundStyle(Color.white)
                         .padding()
                 }
-
+                
             }
+            
             .padding()
             .background(Color.backgroundNavy)
             .navigationBarBackButtonHidden(true)
@@ -124,6 +129,13 @@ struct SessionView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action : {
                         dismiss()
+                        Task {
+                            if firebaseManager.currentUser != nil {
+                                try await firebaseManager.removeUserFromSession(sessionCode: sessionCode, user: firebaseManager.currentUser!)
+                            } else {
+                                print("Unable to remove user from session, currentUser == nil")
+                            }
+                        }
                     }) {
                         Image(systemName: "chevron.left")
                             .foregroundStyle(Color.popcornYellow)
@@ -145,6 +157,9 @@ struct SessionView: View {
             .onAppear {
                 Task {
                     await networkManager.loadMovies()
+                }
+                firebaseManager.watchForMatchingVotes(sessionCode: sessionCode) {matchedMovieId in
+                    print("Everyone liked movie: \(matchedMovieId)")
                 }
             }
         }

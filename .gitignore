@@ -36,7 +36,8 @@ Package.resolved
 
 # Sensitive configuration files
 GoogleService-Info.plist
-JustPick/*.xcconfig
+Config.xcconfig
+*.xcconfig
 
 # CocoaPods (if you're using it)
 Pods/

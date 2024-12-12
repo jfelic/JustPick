@@ -68,6 +68,17 @@ class FirebaseManager: ObservableObject {
             .document(user.id)
             .setData(userData)
     }
+    
+    // MARK: Remove user from session
+    func removeUserFromSession(sessionCode: String, user: User) async throws {
+        print("Removing user from session...")
+        try await db.collection("sessions")
+            .document(sessionCode)
+            .collection("users")
+            .document(user.id)
+            .delete()
+        print("User \(user.id) removed from session \(sessionCode)")
+    }
 
     // MARK: Create a session
     func createSession(sessionCode: String, title: String, selectedGenres: Set<String>) async {
@@ -147,7 +158,7 @@ class FirebaseManager: ObservableObject {
             .document(sessionCode)
             .collection("votes")
             .document(currentUser.id)
-            .updateData(voteData)
+            .setData(voteData, merge: true)
         print("Vote successfully recorded")
     }
     
@@ -174,7 +185,50 @@ class FirebaseManager: ObservableObject {
             .document(sessionCode)
             .collection("votes")
             .document(currentUser.id)
-            .updateData(voteData)
+            .setData(voteData, merge: true)
         print("Vote successfully recorded")
+    }
+    
+    // MARK: Watch for matching votes
+    func watchForMatchingVotes(sessionCode: String, completion: @escaping (Int) -> Void) {
+        // Get reference to votes collection
+        let votesRef = db.collection("sessions")
+            .document(sessionCode)
+            .collection("votes")
+        
+        // Add listener to votes
+        votesRef.addSnapshotListener { snapshot, error in
+            // Make sure we have documents
+            guard let documents = snapshot?.documents else { return }
+            
+            // Track likes for each movie
+            var movieLikes: [String: Set<String>] = [:]
+            
+            // Go through each user's votes
+            for document in documents {
+                let userID = document.documentID
+                let votes = document.data()
+                
+                // Check each movie vote
+                for (movieID, vote) in votes {
+                    // If user liked the movie
+                    if let didLike = vote as? Bool, didLike {
+                        // If this movie isn't in our tracking dict, add empty set
+                        if movieLikes[movieID] == nil {
+                            movieLikes[movieID] = []
+                        }
+                        // Add this user's like
+                        movieLikes[movieID]?.insert(userID)
+                        
+                        // If everyone in session liked this movie (and there's at least 2 prople in the session)
+                        if movieLikes[movieID]?.count == documents.count && movieLikes[movieID]!.count > 1 {
+                            if let movieIdInt = Int(movieID) {
+                                completion(movieIdInt)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

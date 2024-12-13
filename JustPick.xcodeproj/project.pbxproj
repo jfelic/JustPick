@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B80384FE2D03959B00139C49 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B80384FD2D03959B00139C49 /* FirebaseAuth */; };
 		B80385002D03959B00139C49 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B80384FF2D03959B00139C49 /* FirebaseFirestore */; };
+		B8756F562D0C038800443843 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B8756F552D0C038800443843 /* README.md */; };
 		B8EBD92D2D07746200EC699B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B8EBD9122D07746200EC699B /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		B80A93972CF6B76C00A860CB /* JustPick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JustPick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80A93A72CF6B76F00A860CB /* JustPickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustPickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80A93B12CF6B76F00A860CB /* JustPickUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8756F552D0C038800443843 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B87ED3A92D06181D009EE702 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B8EBD9122D07746200EC699B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +116,7 @@
 		B80A938E2CF6B76C00A860CB = {
 			isa = PBXGroup;
 			children = (
+				B8756F552D0C038800443843 /* README.md */,
 				B80A93992CF6B76C00A860CB /* JustPick */,
 				B80A93AA2CF6B76F00A860CB /* JustPickTests */,
 				B80A93B42CF6B76F00A860CB /* JustPickUITests */,
@@ -267,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8EBD92D2D07746200EC699B /* Config.xcconfig in Resources */,
+				B8756F562D0C038800443843 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

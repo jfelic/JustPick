@@ -91,6 +91,12 @@ struct JoinSessionView: View {
                     }
                     .padding(.leading)
                 }
+                ToolbarItem(placement: .principal) {
+                    Text("Join a Session")
+                        .font(.custom("RobotoSlab-Bold", size: 30))
+                        .foregroundStyle(Color.theaterRed)
+//                        .padding(.top)
+                }
             }
             .alert("Error", isPresented: $showError) {
                 Button("OK") {

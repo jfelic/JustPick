@@ -111,6 +111,12 @@ struct HostSessionView: View {
                     }
                     .padding(.leading)
                 }
+                ToolbarItem(placement: .principal) {
+                    Text("Host a Session")
+                        .font(.custom("RobotoSlab-Bold", size: 30))
+                        .foregroundStyle(Color.theaterRed)
+//                        .padding(.top)
+                }
             }
             .onTapGesture { // Dismiss keyboard when user taps outside of it
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),

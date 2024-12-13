@@ -10,6 +10,11 @@
 		B80384FE2D03959B00139C49 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B80384FD2D03959B00139C49 /* FirebaseAuth */; };
 		B80385002D03959B00139C49 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B80384FF2D03959B00139C49 /* FirebaseFirestore */; };
 		B8756F562D0C038800443843 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B8756F552D0C038800443843 /* README.md */; };
+		B8756F5D2D0C07B800443843 /* host.png in Resources */ = {isa = PBXBuildFile; fileRef = B8756F592D0C07B800443843 /* host.png */; };
+		B8756F5E2D0C07B800443843 /* join.png in Resources */ = {isa = PBXBuildFile; fileRef = B8756F5A2D0C07B800443843 /* join.png */; };
+		B8756F5F2D0C07B800443843 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = B8756F582D0C07B800443843 /* home.png */; };
+		B8756F602D0C07B800443843 /* match.png in Resources */ = {isa = PBXBuildFile; fileRef = B8756F5B2D0C07B800443843 /* match.png */; };
+		B8756F612D0C07B800443843 /* session.png in Resources */ = {isa = PBXBuildFile; fileRef = B8756F5C2D0C07B800443843 /* session.png */; };
 		B8EBD92D2D07746200EC699B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B8EBD9122D07746200EC699B /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +40,11 @@
 		B80A93A72CF6B76F00A860CB /* JustPickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustPickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B80A93B12CF6B76F00A860CB /* JustPickUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8756F552D0C038800443843 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B8756F582D0C07B800443843 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
+		B8756F592D0C07B800443843 /* host.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = host.png; sourceTree = "<group>"; };
+		B8756F5A2D0C07B800443843 /* join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = join.png; sourceTree = "<group>"; };
+		B8756F5B2D0C07B800443843 /* match.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = match.png; sourceTree = "<group>"; };
+		B8756F5C2D0C07B800443843 /* session.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = session.png; sourceTree = "<group>"; };
 		B87ED3A92D06181D009EE702 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B8EBD9122D07746200EC699B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -116,6 +126,7 @@
 		B80A938E2CF6B76C00A860CB = {
 			isa = PBXGroup;
 			children = (
+				B8756F572D0C072700443843 /* Screenshots */,
 				B8756F552D0C038800443843 /* README.md */,
 				B80A93992CF6B76C00A860CB /* JustPick */,
 				B80A93AA2CF6B76F00A860CB /* JustPickTests */,
@@ -134,6 +145,18 @@
 				B80A93B12CF6B76F00A860CB /* JustPickUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B8756F572D0C072700443843 /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				B8756F582D0C07B800443843 /* home.png */,
+				B8756F592D0C07B800443843 /* host.png */,
+				B8756F5A2D0C07B800443843 /* join.png */,
+				B8756F5B2D0C07B800443843 /* match.png */,
+				B8756F5C2D0C07B800443843 /* session.png */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 		B8EBD9092D07746200EC699B /* Recovered References */ = {
@@ -271,6 +294,11 @@
 			files = (
 				B8EBD92D2D07746200EC699B /* Config.xcconfig in Resources */,
 				B8756F562D0C038800443843 /* README.md in Resources */,
+				B8756F5D2D0C07B800443843 /* host.png in Resources */,
+				B8756F5E2D0C07B800443843 /* join.png in Resources */,
+				B8756F5F2D0C07B800443843 /* home.png in Resources */,
+				B8756F602D0C07B800443843 /* match.png in Resources */,
+				B8756F612D0C07B800443843 /* session.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

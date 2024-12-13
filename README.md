@@ -21,13 +21,16 @@ JustPick is a SwiftUI-based iOS app that helps groups of friends decide on a mov
 
 ## App Preview
 
-<p float="left">
-  <img src="Assets/home.png" width="200" />
-  <img src="Assets/host.png" width="200" />
-  <img src="Assets/session.png" width="200" />
-  <img src="Assets/join.png" width="200" />
-  <img src="Assets/match.png" width="200" />
-</p>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+    <img src="Screenshots/home.png" width="250" />
+    <img src="Screenshots/host.png" width="250" />
+    <img src="Screenshots/session.png" width="250" />
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px;">
+    <img src="Screenshots/join.png" width="250" />
+    <img src="Screenshots/match.png" width="250" />
+</div>
 
 ## Key Components
 

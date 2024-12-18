@@ -19,8 +19,6 @@ JustPick is a SwiftUI-based iOS app that helps groups of friends decide on a mov
 
 ## Screenshots
 
-## App Preview
-
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
     <img src="Screenshots/home.png" width="250" />
     <img src="Screenshots/host.png" width="250" />
@@ -48,6 +46,7 @@ JustPick is a SwiftUI-based iOS app that helps groups of friends decide on a mov
 ### Custom Components
 - `MovieCard`: Reusable movie poster display component
 - `VoteButton`: Customizable like/dislike buttons
+- `CustomTextField`: Reusable text input field
 
 ## Setup
 ### Please contact me regarding setup if you have questions 

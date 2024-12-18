@@ -21,7 +21,7 @@ JustPick is a SwiftUI-based iOS app that helps groups of friends decide on a mov
 
 ## App Preview
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
     <img src="Screenshots/home.png" width="250" />
     <img src="Screenshots/host.png" width="250" />
     <img src="Screenshots/session.png" width="250" />
@@ -50,7 +50,7 @@ JustPick is a SwiftUI-based iOS app that helps groups of friends decide on a mov
 - `VoteButton`: Customizable like/dislike buttons
 
 ## Setup
-
+### Please contact me regarding setup if you have questions 
 1. Clone the repository
 2. Add your TMDB API credentials to `info.plist`:
    - `TMDB_API_KEY`

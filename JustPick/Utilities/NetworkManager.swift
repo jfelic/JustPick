@@ -64,32 +64,6 @@ enum APIConfig {
         }
     }
     
-//    func testAPIConfig() {
-//        print("Testing API Configuration...")
-//        print("API Key: \(String(APIConfig.apiKey.prefix(5)))...")
-//        print("Access Token exists: \(APIConfig.accessToken.isEmpty ? "No" : "Yes")")
-//        
-//        Task {
-//            do {
-//                let url = URL(string: "https://api.themoviedb.org/3/authentication")!
-//                var request = URLRequest(url: url)
-//                request.httpMethod = "GET"
-//                request.timeoutInterval = 10
-//                request.allHTTPHeaderFields = [
-//                    "accept": "application/json",
-//                    "Authorization": "Bearer \(APIConfig.accessToken)"
-//                ]
-//                
-//                let (data, _) = try await URLSession.shared.data(for: request)
-//                print(String(decoding: data, as: UTF8.self))
-//                
-//                
-//            } catch {
-//                print("API Test Error: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
     // MARK: Fetch Movies
     func fetchMovies() async throws -> [Movie] {
         // First, set up the URL with query parameters

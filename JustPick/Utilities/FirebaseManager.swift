@@ -35,7 +35,7 @@ class FirebaseManager: ObservableObject {
     func signInAnonymously(name: String) async {
         do {
             // Try to sign in and wait for result
-            let result = try await Auth.auth().signInAnonymously()
+            let result = try await Auth.auth().signInAnonymously() // returns a UserCredentials object
             
             // If we successfully get a user back
             // create our User model with their Firebase ID and chosen name
@@ -47,10 +47,11 @@ class FirebaseManager: ObservableObject {
     
     // MARK: Add a user to session
     func addUserToSession(sessionCode: String, user: User) async throws {
+        print("Adding user to session \(sessionCode)...")
         // Make sure we have a currentUser
         guard let currentUser = currentUser
             else {
-                print("Hello")
+                print("Cannot add user to session: No authenticated user")
                 return
             }
         
@@ -67,6 +68,7 @@ class FirebaseManager: ObservableObject {
             .collection("users")
             .document(user.id)
             .setData(userData)
+        print("User \(user.id) added to session \(sessionCode) successfully")
     }
     
     // MARK: Remove user from session
@@ -95,7 +97,7 @@ class FirebaseManager: ObservableObject {
             "host": currentUser.id,
             "title": title,
             "createdAt": Timestamp(),
-            "genres": Array(selectedGenres),
+            "genres": Array(selectedGenres), // Make sure to cast selectedGenres from a Set to an Array
             "active": true,
         ]
         
@@ -105,11 +107,11 @@ class FirebaseManager: ObservableObject {
                 .document(sessionCode)
                 .setData(sessionData)
             
-            print("Session created successfully")
+            print("Session \(sessionCode) created successfully")
             
             try await addUserToSession(sessionCode: sessionCode, user: currentUser)
         } catch {
-            print("Error creating session: \(error.localizedDescription)")
+            print("Error creating session \(sessionCode): \(error.localizedDescription)")
         }
     }
     
@@ -120,7 +122,9 @@ class FirebaseManager: ObservableObject {
             .document(sessionCode)
             .getDocument()
         
+        // Make sure the session we're snapshotting has data
         guard let data = documentSnapshot.data() else {
+            print("Input session code has no data")
             throw FirebaseError.invalidData
         }
         
@@ -128,24 +132,27 @@ class FirebaseManager: ObservableObject {
         guard let title = data["title"] as? String,
               let genres = data["genres"] as? [String],
               let host = data["host"] as? String,
-              let active = data["active"] as? Bool else {
+              let active = data["active"] as? Bool
+        else {
             throw FirebaseError.decodingError
         }
         
+        // Use the SessionDetails struct to store our fetched data
         return SessionDetails(title: title, selectedGenres: Set(genres), host: host, active: active)
+        // Make sure to convert selectedGenres back to a Set
     }
     
     // MARK: Like Movie
     func likeMovie(movieID: Int, sessionCode: String) async throws {
         // Make sure we have a currentUser
         guard let currentUser = currentUser else {
-            print("likeMovie: User is not authenticated")
+            print("Cannot like movie: No authenticated user")
             return
         }
         
-        print("Attempting to like movie with ID: \(movieID)")
         print("Session code: \(sessionCode)")
         print("Current user ID: \(currentUser.id)")
+        print("Attempting to like movie with ID: \(movieID)")
         
         // Create the data we want to send
         let voteData: [String: Any] = [
@@ -166,7 +173,7 @@ class FirebaseManager: ObservableObject {
     func dislikeMovie(movieID: Int, sessionCode: String) async throws {
         // Make sure we have a currentUser
         guard let currentUser = currentUser else {
-            print("dislikeMovie: User is not authenticated")
+            print("Cannot dislike movie: No authenticated user")
             return
         }
         
@@ -191,7 +198,7 @@ class FirebaseManager: ObservableObject {
     
     // MARK: Watch for matching votes
     func watchForMatchingVotes(sessionCode: String, completion: @escaping (Int) -> Void) {
-        // Get reference to votes collection
+        // Get snapshot of votes collection in given session
         let votesRef = db.collection("sessions")
             .document(sessionCode)
             .collection("votes")
@@ -213,7 +220,7 @@ class FirebaseManager: ObservableObject {
                 for (movieID, vote) in votes {
                     // If user liked the movie
                     if let didLike = vote as? Bool, didLike {
-                        // If this movie isn't in our tracking dict, add empty set
+                        // If this movie isn't in our tracking dict, add it with value = empty
                         if movieLikes[movieID] == nil {
                             movieLikes[movieID] = []
                         }

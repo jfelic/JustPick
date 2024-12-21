@@ -32,8 +32,7 @@ struct JoinSessionView: View {
                 
                 Button(action: {
                     print("JoinSessionView: Join Pressed")
-                    // TODO: Handle logic here
-                    
+            
                     Task {
                         do {
                             // First we sign in our user

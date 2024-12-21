@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var navigationPath = NavigationPath()
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             VStack {
                 ZStack {
                     Image("sign")
@@ -57,6 +59,8 @@ struct HomeView: View {
             .padding()
             .background(Color.backgroundNavy)
         }
+        // TODO: 
+//        .environment(\.navigationPath, $navigationPath)
     }
 }
 

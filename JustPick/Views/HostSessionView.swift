@@ -68,6 +68,12 @@ struct HostSessionView: View {
                     Button(action: {
                         print("HostSessionView: Host Pressed")
                         
+                        guard !title.trimmingCharacters(in: .whitespaces).isEmpty,
+                              !name.trimmingCharacters(in: .whitespaces).isEmpty else {
+                            print("Title or name is empty")
+                            return
+                        }
+                        
                         Task {
                             // Sign in anonymous user with their chosen name
                             await firebaseManager.signInAnonymously(name: name)

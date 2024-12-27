@@ -87,7 +87,6 @@ struct HostSessionView: View {
                                 await firebaseManager.signInAnonymously(name: name)
                                 
                                 // Create session with current user as host
-                                // TODO: If user didn't select any genres, default to all genres
                                 await firebaseManager.createSession(sessionCode: sessionCode, title: title, selectedGenres: selectedGenres)
                                 
                                 // Lastly, navigate user to session screen

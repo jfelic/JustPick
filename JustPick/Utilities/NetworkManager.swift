@@ -65,18 +65,31 @@ enum APIConfig {
     }
     
     // MARK: Fetch Movies
-    func fetchMovies() async throws -> [Movie] {
+    func fetchMovies(selectedGenres: Set<String>, genres: [String:Int]) async throws -> [Movie] {
         // First, set up the URL with query parameters
         let url = URL(string: "https://api.themoviedb.org/3/discover/movie")!
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         
-        let queryItems: [URLQueryItem] = [
+        // Convert selected genre names to IDs and join them with commas
+        let genreIds = selectedGenres
+            .compactMap { genres[$0] }  // Get the IDs for selected genres
+            .map { String($0) }         // Convert IDs to strings
+            .joined(separator: ",")     // Join with commas
+        
+        // These are the parameters that TMBD requires to make the call
+        var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "include_adult", value: "false"),
             URLQueryItem(name: "include_video", value: "false"),
             URLQueryItem(name: "language", value: "en-US"),
             URLQueryItem(name: "page", value: "1"),
             URLQueryItem(name: "sort_by", value: "popularity.desc"),
+            URLQueryItem(name: "region", value: "en-US")
         ]
+        
+        // We only ladd genres parameter if user selected genres
+        if !genres.isEmpty {
+            queryItems.append(URLQueryItem(name: "with_genres", value: genreIds))
+        }
         
         components.queryItems = queryItems
         
@@ -105,7 +118,8 @@ enum APIConfig {
     func loadMovies() async {
         do {
             // Fetch new movies from the API
-            let fetchedMovies = try await fetchMovies()
+            // TODO: Get session details here to use in fetchedMoves calls
+            let fetchedMovies = try await fetchMovies(selectedGenres: <#T##Set<String>#>, genres: <#T##[String : Int]#>)
             
             // Update our movies array with the new data
             // This will automatically trigger UI updates thanks to @Observable

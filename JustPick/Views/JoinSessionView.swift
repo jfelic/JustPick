@@ -32,33 +32,43 @@ struct JoinSessionView: View {
                 
                 Button(action: {
                     print("JoinSessionView: Join Pressed")
-            
-                    Task {
-                        do {
-                            // First we sign in our user
-                            await firebaseManager.signInAnonymously(name: name)
-                            
-                            // Then fetch session details
-                            let details = try await firebaseManager.getSessionDetails(sessionCode: sessionCode)
-                            
-                            // Store details
-                            sessionTitle = details.title
-                            selectedGenres = details.selectedGenres
-                            
-                            // Add user to session
-                            if let currentUser = firebaseManager.currentUser {
-                                try await firebaseManager.addUserToSession(sessionCode: sessionCode, user: currentUser)
+                    // Make sure both fields have inputs
+                    if sessionCode.isEmpty && name.isEmpty {
+                        showError = true
+                        errorMessage = "Please input both Your Name and Session Code"
+                    } else if sessionCode.isEmpty {
+                        showError = true
+                        errorMessage = "Please input a Session Code"
+                    } else if name.isEmpty {
+                        showError = true
+                        errorMessage = "Please input Your Name"
+                    } else { // if both fields are filled, attempt to join session
+                        Task {
+                            do {
+                                // First we sign in our user
+                                await firebaseManager.signInAnonymously(name: name)
+                                
+                                // Then fetch session details
+                                let details = try await firebaseManager.getSessionDetails(sessionCode: sessionCode)
+                                
+                                // Store details
+                                sessionTitle = details.title
+                                selectedGenres = details.selectedGenres
+                                
+                                // Add user to session
+                                if let currentUser = firebaseManager.currentUser {
+                                    try await firebaseManager.addUserToSession(sessionCode: sessionCode, user: currentUser)
+                                }
+                                
+                                // Navigate 👍
+                                navigateToSessionView = true
+                                
+                            } catch {
+                                showError = true
+                                errorMessage = "Could not join session: \(error.localizedDescription)"
                             }
-                            
-                            // Navigate 👍
-                            navigateToSessionView = true
-                            
-                        } catch {
-                            showError = true
-                            errorMessage = "Could not join session: \(error.localizedDescription)"
                         }
                     }
-                    
                 }) {
                     Text("Join Session")
                         .font(.custom("RobotoSlab-Bold", size: 30))

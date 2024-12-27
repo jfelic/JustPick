@@ -12,9 +12,12 @@ struct HostSessionView: View {
     @State private var title = ""
     @State private var sessionCode = ""
     @State private var name = ""
+    @State private var showError = false
+    @State private var errorMessage = ""
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var firebaseManager: FirebaseManager // interact with Firebase
     @State private var navigateToSessionView = false // State to trigger navigation
+    
     
     let genres: [String: Int] = ["Action": 28, "Adventure": 12, "Comedy": 35, "Drama": 18, "Fantasy": 14, "Horror": 27, "Mystery": 9648, "Romance": 10749, "Science Fiction": 878, "Thriller": 53]
     @State private var selectedGenres: Set<String> = []
@@ -68,21 +71,28 @@ struct HostSessionView: View {
                     Button(action: {
                         print("HostSessionView: Host Pressed")
                         
-                        guard !title.trimmingCharacters(in: .whitespaces).isEmpty,
-                              !name.trimmingCharacters(in: .whitespaces).isEmpty else {
-                            print("Title or name is empty")
-                            return
-                        }
-                        
-                        Task {
-                            // Sign in anonymous user with their chosen name
-                            await firebaseManager.signInAnonymously(name: name)
-                            
-                            // Create session with current user as host
-                            await firebaseManager.createSession(sessionCode: sessionCode, title: title, selectedGenres: selectedGenres)
-                            
-                            // Lastly, navigate user to session screen
-                            navigateToSessionView = true
+                        // Check if both fields are filled out
+                        if title.isEmpty && name.isEmpty {
+                            showError = true
+                            errorMessage = "Please input both a Session Title and Your Name"
+                        } else if title.isEmpty {
+                            showError = true
+                            errorMessage = "Please input a Session Title"
+                        } else if name.isEmpty {
+                            showError = true
+                            errorMessage = "Please input Your Name"
+                        } else { // Both fields are not empty, continue
+                            Task {
+                                // Sign in anonymous user with their chosen name
+                                await firebaseManager.signInAnonymously(name: name)
+                                
+                                // Create session with current user as host
+                                // TODO: If user didn't select any genres, default to all genres
+                                await firebaseManager.createSession(sessionCode: sessionCode, title: title, selectedGenres: selectedGenres)
+                                
+                                // Lastly, navigate user to session screen
+                                navigateToSessionView = true
+                            }
                         }
                     }) {
                         Text("Host Session")
@@ -130,6 +140,13 @@ struct HostSessionView: View {
             }
             .onAppear { // Generate session code
                 sessionCode = String(Int.random(in: 1000...99999))
+            }
+            .alert("Error", isPresented: $showError) {
+                Button("OK") {
+                    showError = false
+                }
+            } message: {
+                Text(errorMessage)
             }
         }
     }

@@ -60,7 +60,8 @@ enum APIConfig {
     
     init() {
         Task {
-            await loadMovies() // updates self.movies array
+            // Initialize with empty values or wait to load until we have the actual genres
+            await loadMovies(selectedGenres: [], genres: [:])
         }
     }
     
@@ -74,7 +75,7 @@ enum APIConfig {
         let genreIds = selectedGenres
             .compactMap { genres[$0] }  // Get the IDs for selected genres
             .map { String($0) }         // Convert IDs to strings
-            .joined(separator: ",")     // Join with commas
+            .joined(separator: "|")     // Join with commas
         
         // These are the parameters that TMBD requires to make the call
         var queryItems: [URLQueryItem] = [
@@ -115,11 +116,11 @@ enum APIConfig {
     }
     
     // MARK: Load Movies
-    func loadMovies() async {
+    func loadMovies(selectedGenres: Set<String>, genres: [String: Int]) async {
         do {
             // Fetch new movies from the API
             // TODO: Get session details here to use in fetchedMoves calls
-            let fetchedMovies = try await fetchMovies(selectedGenres: <#T##Set<String>#>, genres: <#T##[String : Int]#>)
+            let fetchedMovies = try await fetchMovies(selectedGenres: selectedGenres, genres: genres)
             
             // Update our movies array with the new data
             // This will automatically trigger UI updates thanks to @Observable

@@ -108,7 +108,7 @@ struct SessionView: View {
                 }
                 .onAppear {
                     Task {
-                        await networkManager.loadMovies()
+                        await networkManager.loadMovies(selectedGenres: selectedGenres, genres: ["Action": 28, "Adventure": 12, "Comedy": 35, "Drama": 18, "Fantasy": 14, "Horror": 27, "Mystery": 9648, "Romance": 10749, "Science Fiction": 878, "Thriller": 53])
                     }
                     firebaseManager.watchForMatchingVotes(sessionCode: sessionCode) {matchedMovieId in
                         print("Everyone liked movie: \(matchedMovieId)")

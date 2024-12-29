@@ -57,6 +57,7 @@ enum APIConfig {
 @Observable class NetworkManager {
 
     var movies: [Movie] = []
+    private var currentPage = 1
     
     init() {
         Task {
@@ -82,7 +83,6 @@ enum APIConfig {
             URLQueryItem(name: "include_adult", value: "false"),
             URLQueryItem(name: "include_video", value: "false"),
             URLQueryItem(name: "language", value: "en-US"),
-            URLQueryItem(name: "page", value: "1"),
             URLQueryItem(name: "sort_by", value: "popularity.desc"),
             URLQueryItem(name: "region", value: "en-US")
         ]
@@ -91,7 +91,7 @@ enum APIConfig {
         if !genres.isEmpty {
             queryItems.append(URLQueryItem(name: "with_genres", value: genreIds))
         }
-        
+        queryItems.append(URLQueryItem(name: "page", value: String(currentPage)))
         components.queryItems = queryItems
         
         var request = URLRequest(url: components.url!)
@@ -102,13 +102,16 @@ enum APIConfig {
             "Authorization": "Bearer \(APIConfig.accessToken)"
         ]
         
-        let(data, response) = try await URLSession.shared.data(for: request)
+        let(data, _) = try await URLSession.shared.data(for: request)
         print(String(decoding: data, as: UTF8.self))
         
         do {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             let response = try decoder.decode(TMDBMovieResponse.self, from: data)
+        
+            currentPage += 1
+            
             return response.results
         } catch {
             throw TMDBError.decodingError
@@ -171,6 +174,14 @@ enum APIConfig {
             print("fetchMovieByID: Decoding error \(error)")
             throw TMDBError.decodingError
         }
-        
+    }
+    
+    func fetchNextPage(selectedGenres: Set<String>, genres: [String: Int]) async {
+        do {
+            let fetchedMovies = try await fetchMovies(selectedGenres: selectedGenres, genres: genres)
+            self.movies.append(contentsOf: fetchedMovies)
+        } catch {
+            print("Error fetching next page: \(error)")
+        }
     }
 }

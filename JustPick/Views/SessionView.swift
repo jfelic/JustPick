@@ -16,7 +16,7 @@ struct SessionView: View {
     // Shared session info
     let sessionCode: String // Passed in from HostSessionView
     let sessionTitle: String // Passed in from HostSessionView
-    @State var selectedGenres: Set<String> = ["Action"] // Passed in from HostSessionView
+    @State var selectedGenres: Set<String> = [] // Passed in from HostSessionView
     @State var participants: [User] = []
     @State var currentMovieIndex = 0
     @State var showToolBar = true
@@ -44,6 +44,10 @@ struct SessionView: View {
                         Task {
                             try await firebaseManager.likeMovie(movieID: networkManager.movies[currentMovieIndex].id, sessionCode: sessionCode)
                             currentMovieIndex += 1
+                            
+                            if currentMovieIndex >= networkManager.movies.count - 5 {
+                                await networkManager.fetchNextPage(selectedGenres: selectedGenres, genres: ["Action": 28, "Adventure": 12, "Comedy": 35, "Drama": 18, "Fantasy": 14, "Horror": 27, "Mystery": 9648, "Romance": 10749, "Science Fiction": 878, "Thriller": 53])
+                            }
                         }
                     })
                     .padding(.trailing)
@@ -53,6 +57,10 @@ struct SessionView: View {
                         Task {
                             try await firebaseManager.dislikeMovie(movieID: networkManager.movies[currentMovieIndex].id, sessionCode: sessionCode)
                             currentMovieIndex += 1
+                            
+                            if currentMovieIndex >= networkManager.movies.count - 5 {
+                                await networkManager.fetchNextPage(selectedGenres: selectedGenres, genres: ["Action": 28, "Adventure": 12, "Comedy": 35, "Drama": 18, "Fantasy": 14, "Horror": 27, "Mystery": 9648, "Romance": 10749, "Science Fiction": 878, "Thriller": 53])
+                            }
                         }
                     })
                     .padding(.leading)

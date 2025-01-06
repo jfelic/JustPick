@@ -7,7 +7,8 @@
 import SwiftUI
 
 struct MatchOverlay: View {
-    let matchedMovie: Movie? 
+    @Environment(\.dismiss) var dismiss
+    let matchedMovie: Movie?
     
     var body: some View {
         ZStack {
@@ -32,7 +33,7 @@ struct MatchOverlay: View {
                         .padding()
                     
                     Button("Return Home") {
-                        // TODO: Navigate user home
+                        dismiss()
                     }
                     .font(.custom("RobotoSlab-Bold", size: 30))
                     .frame(maxWidth: .infinity)

@@ -24,7 +24,7 @@ struct SessionView: View {
     @State private var matchedMovie: Movie? = nil
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             VStack {
                 VStack {
                     
@@ -144,7 +144,7 @@ struct SessionView: View {
                 }
                 .transition(.move(edge: .bottom))
                 .animation(.easeInOut, value: showMatchOverlay)
-            }
+//            }
         }
     }
 

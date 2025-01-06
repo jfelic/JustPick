@@ -22,7 +22,7 @@ struct JoinSessionView: View {
     @State private var errorMessage = ""
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             VStack {
                 
                 CustomTextField(label: "Your Name: ", text: $name)
@@ -118,7 +118,7 @@ struct JoinSessionView: View {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                 to: nil, from: nil, for: nil)
             }
-        }
+//        }
     }
 }
 

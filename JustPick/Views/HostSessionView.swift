@@ -23,7 +23,7 @@ struct HostSessionView: View {
     @State private var selectedGenres: Set<String> = []
     
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             VStack {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
@@ -147,7 +147,7 @@ struct HostSessionView: View {
             } message: {
                 Text(errorMessage)
             }
-        }
+//        }
     }
 }
 

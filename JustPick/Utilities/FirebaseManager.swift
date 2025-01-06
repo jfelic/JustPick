@@ -238,4 +238,13 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
+    
+    // MARK: Set session to active or inactive
+    func setSessionActive(sessionCode: String, active: Bool) async throws {
+        try await db.collection("sessions")
+            .document(sessionCode)
+            .updateData([
+                "active": active
+            ])
+    }
 }

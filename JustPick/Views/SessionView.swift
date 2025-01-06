@@ -22,24 +22,17 @@ struct SessionView: View {
     @State var showToolBar = true
     @State private var showMatchOverlay = false
     @State private var matchedMovie: Movie? = nil
-    @State private var isLoading = true
     
     var body: some View {
         NavigationStack {
             VStack {
                 VStack {
                     
-                    if isLoading {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: Color.popcornYellow))
-                            .scaleEffect(2)
-                    } else {
-                        MovieCard(url: networkManager.movies[currentMovieIndex].fullPosterPath)
-                        
-                        Text(networkManager.movies[currentMovieIndex].title)
-                            .font(.custom("RobotoSlab-Bold", size: 25))
-                            .foregroundStyle(Color.white)
-                    }
+                    MovieCard(url: networkManager.movies[currentMovieIndex].fullPosterPath)
+                    
+                    Text(networkManager.movies[currentMovieIndex].title)
+                        .font(.custom("RobotoSlab-Bold", size: 25))
+                        .foregroundStyle(Color.white)
                 }
                 
                 Spacer()
@@ -119,14 +112,12 @@ struct SessionView: View {
                                 .padding()
                         }
                     }
-                    
                 }
                 .onAppear {
                     Task {
                         await networkManager.loadMovies(selectedGenres: selectedGenres, genres: ["Action": 28, "Adventure": 12, "Comedy": 35, "Drama": 18, "Fantasy": 14, "Horror": 27, "Mystery": 9648, "Romance": 10749, "Science Fiction": 878, "Thriller": 53])
-                        isLoading = false
                     }
-                    firebaseManager.watchForMatchingVotes(sessionCode: sessionCode) {matchedMovieId in
+                    firebaseManager.watchForMatchingVotes(sessionCode: sessionCode) { matchedMovieId in
                         print("Everyone liked movie: \(matchedMovieId)")
                         
                         // Get movie with ID
@@ -134,11 +125,16 @@ struct SessionView: View {
                             matchedMovie = try await networkManager.fetchMovieByID(movieID: matchedMovieId)
                         }
                         
+                        // Display overlay
+                        showMatchOverlay = true
+                        
                         // Disable toolbar
                         showToolBar = false
                         
-                        // Display overlay
-                        showMatchOverlay = true
+                        // Disable the session
+                        Task {
+                                try await firebaseManager.setSessionActive(sessionCode: sessionCode, active: false)
+                        }
                     }
                 }
                 .overlay {
